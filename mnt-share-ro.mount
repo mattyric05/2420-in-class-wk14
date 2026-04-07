@@ -1,0 +1,14 @@
+[Unit]
+Description=Mount NFS Share /mnt/share
+After=network-online.target
+Wants=network-online.target
+
+[Mount]
+What=10.100.0.4:/31621597/26521de6-172a-4e61-a157-f627d00516d9
+Where=/mnt/share
+Type=nfs
+Options=nconnect=8,ro
+TimeoutSec=30
+
+[Install]
+WantedBy=multi-user.target

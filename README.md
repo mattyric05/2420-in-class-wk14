@@ -1,18 +1,6 @@
 # 2420 In-Class Week 14
 
-This submission is partial because DigitalOcean blocked creation of the required Network File Storage share on this account.
-
-The blocker shown in the DigitalOcean control panel was:
-
-`Looks like you've hit the NFS limit. Request an increase.`
-
-Because the NFS share could not be created, I could not complete the mount configuration, mount status checks, or the file server test that depended on a real NFS share.
-
-## Completed Work
-
-- Created both Debian 13 droplets in `NYC2`
-- Provisioned both droplets with `cloud-init`
-- Created the `mateu` user and added the required packages in `cloud-config.yaml`
+This lab was completed as part of a group. Some screenshots reflect the shared group environment used during setup and testing.
 
 ## Completed `cloud-config.yaml`
 
@@ -54,9 +42,48 @@ runcmd:
   - mkdir -p /mnt/share
 ```
 
-## Droplets Created
+## Completed Read-Only Mount File
 
-- `share-rw`: `162.243.88.210`
-- `share-ro`: `192.241.168.206`
+```ini
+[Unit]
+Description=Mount NFS Share /mnt/share
+After=network-online.target
+Wants=network-online.target
 
-![Droplets Created](screenshots/01-droplets-created.png)
+[Mount]
+What=10.100.0.4:/31621597/26521de6-172a-4e61-a157-f627d00516d9
+Where=/mnt/share
+Type=nfs
+Options=nconnect=8,ro
+TimeoutSec=30
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## DigitalOcean Droplets
+
+- `share-ro`: `107.170.60.32`
+- `share-rw`: `162.243.43.130`
+
+![Droplets Created](screenshots/droplets_nyc.png)
+
+## Network File Storage
+
+![NFS Created](screenshots/NFS.png)
+
+## `systemctl status` On `share-rw`
+
+![share-rw mount status](screenshots/rw_status.png)
+
+## `systemctl status` On `share-ro`
+
+![share-ro mount status](screenshots/ro_status.png)
+
+## `systemctl status` For `caddy` On `share-ro`
+
+![caddy status on share-ro](screenshots/ro_status.png)
+
+## File Server
+
+![Caddy file server](screenshots/caddy.png)
